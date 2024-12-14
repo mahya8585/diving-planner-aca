@@ -1,24 +1,19 @@
-from flask import Flask
-from flask import request
-import agent
-app = Flask(__name__)
+from typing import Optional
+
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
+app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods="GET",
+    allow_headers=["*"]
+)
 
 
-@app.route('/chat', methods=['POST'])
-def chat():
-    # post bodyをjson型で取得
-    data = request.get_json()
-
-    # agentからのメッセージを取得
-    #response_message = agent.orchastrator(data)
-
-
-
-
-@app.route('/', methods=['GET'])
-def hello():
-    return "Hello World!"
-
-
-if __name__ == '__main__':
-   app.run(host="0.0.0.0", port=8080)
+@app.get("/")
+def read_root():
+    return {"hello, world!"}
